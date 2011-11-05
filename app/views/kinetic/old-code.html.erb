@@ -6,7 +6,7 @@
    var tempo = analyze_song();
    var spb = 1/tempo*60*4;
 
-   $("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate, function(event) { // Add a listener to report the time play began
+   $("#jplayer").bind($.jPlayer.event.timeupdate, function(event) { // Add a listener to report the time play began
          var time = Math.floor(event.jPlayer.status.currentTime*1)/1;
          $("#playBeganAtTime").text("Play began at time = " + time);
          if(time > spb) {
@@ -16,7 +16,7 @@
          
 	   });
 
-	$("#jquery_jplayer_1").jPlayer({
+	$("#jplayer").jPlayer({
 		ready: function (event) {
 		$(this).jPlayer("setMedia", {
 	    m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
