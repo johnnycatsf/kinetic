@@ -5,6 +5,7 @@ analyzeSong = (song_id) ->
     data: 
       api_key: "CJMTSEJKZGMYYF9UI"
       id: song_id
+      bucket: "audio_summary"
     success: analyzeSongCallback
     error: errorCallback
     dataType: "json"
@@ -13,7 +14,8 @@ retrieveAnalysis = (analysis_url) ->
   $.ajax
     type: 'GET'
     url: analysis_url
-    success: errorCallback
+    success: 
+    error: errorCallback
     dataType: "json"
 
 analyzeSongCallback = (data, textStatus, jqXHR) -> 
@@ -24,6 +26,9 @@ analyzeSongCallback = (data, textStatus, jqXHR) ->
     console.log("Analysis url is "+ data.response.track.audio_summary.analysis_url)
     analysis_url = data.response.track.audio_summary.analysis_url
     retrieveAnalysis(analysis_url)
+
+retrieveAnalysisCallback = (data, textStatus, jqXHR) ->
+  console.log(data)
 
 errorCallback = (jqXHR) ->
   alert "there was an error"
