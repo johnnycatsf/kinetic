@@ -1,12 +1,19 @@
-
 <p> Welcome to kinect! </p>
 
-<textarea id="text" type="text">please type your words here...</textarea>
+<div id="user-input">
 
-<p> Now select a song... </p>
+   <textarea id="text" type="text">please type your words here...</textarea>
 
-<%= render :partial => "select-song" %> 
+   <p> Now select a song... </p>
 
-<input id="echonest-song-id" type="hidden" value="ARR0KBC1187FB38177" name="echonest-song-id" />
+   <%= render :partial => "select-song" %> 
 
-<button onclick="play()">Play</button>
+   <input id="echonest-song-id" type="hidden" value="ARR0KBC1187FB38177" name="echonest-song-id" />
+   <button onclick="play()">Play</button>
+</div><!-- end user-input-->
+
+<div id="animation">
+
+</div>
+
+<%= render :partial => "jplayer" %>
