@@ -1,6 +1,6 @@
 class Track
   constructor: (@echonest_track_id, @fma_id) ->
-    @analyzeSong
+    @analyzeSong()
 
   ready: (@ready_callback) ->
     
@@ -16,7 +16,7 @@ class Track
       error: @errorCallback
       dataType: "json"
 
-  analyzeSongCallback: (data, textStatus, jqXHR) -> 
+  analyzeSongCallback: (data, textStatus, jqXHR) => 
     # data is a json object containing the track analyze data
     console.log(data)
     #if data.response.status.message is "Success"
@@ -35,16 +35,15 @@ class Track
       success: @retrieveAnalysisCallback
       error: @errorCallback
       dataType: "json"
-    
-  retrieveAnalysisCallback: (data, textStatus, jqXHR) ->
+
+  retrieveAnalysisCallback: (data, textStatus, jqXHR) =>
     console.log("RETRIEVE ANALYSIS CALLBACK")
     console.log(data)
     #data is a json object containing detailed track analysis
     @beats = data.beats
-    @song_end = data.track.duration
-    
+    @song_end = data.track.duration * 1000
     # now we have the data, but we also need the song
-    setSongURL()
+    @setSongURL()
 
   setSongURL: ->
     $.ajax
@@ -56,9 +55,9 @@ class Track
       error: @errorCallback
       dataType: "xml"
 
-  setSongURLCallback: (data, textStatus, jqXHR) ->
+  setSongURLCallback: (data, textStatus, jqXHR) =>
     console.log(data)
-    @song = data.track.download
+    @track_url = $(data).find("download").text()
     # when complete, say i'm ready
     @ready_callback() if @ready_callback?
 
@@ -67,9 +66,11 @@ class Track
 
   getSongEnd: -> @song_end
 
+  getTrackUrl: -> @track_url
+
   getBeats: ->
     actual_beats = []
     for beat in @beats
-      if beat.confidence > 0.5
-        actual_beats.add(beat.start)
+      if beat.confidence > 0.3
+        actual_beats.push(beat.start * 1000)
     return actual_beats

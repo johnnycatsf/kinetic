@@ -102,13 +102,13 @@ Pixar = (function() {
   Pixar.postAnimate = function(el$) {};
   Pixar.animations = {
     fade: function(options) {
-      return this.fadeIn('fast').delay(1000).fadeOut();
+      return this.show().delay(1000).fadeOut();
     },
     bump: function(options) {
-      return this.fadeIn('fast').delay(1000).fadeOut();
+      return this.show().delay(1000).fadeOut();
     },
     jump: function(options) {
-      return this.fadeIn('fast').delay(1000).fadeOut();
+      return this.show().delay(1000).fadeOut();
     }
   };
   return Pixar;
@@ -137,15 +137,19 @@ jQuery(function() {
   var jEvent, jp$, track, trackReady;
   jp$ = $("#jplayer");
   jEvent = $.jPlayer.event;
-  track = new Track("TRQCKVG131BAB7368F");
-  track.ready(trackReady);
-  return trackReady = function() {
-    var event_queue;
-    event_queue = new EventQueue(TestData.test_string, track.getBeats(), tack.getSongEnd());
+  track = new Track("TRQUWYF131BAB75456", 24209);
+  trackReady = function() {
+    var event_queue, track_url;
+    event_queue = new EventQueue(TestData.test_string, track.getBeats(), track.getSongEnd());
+    console.log("Setup error queue", event_queue);
+    track_url = track.getTrackUrl();
+    console.log(track_url);
+    console.log("Setting up jPlayer with music!");
     jp$.jPlayer({
       ready: function() {
+        console.log("Ready! Attaching media");
         return $(this).jPlayer("setMedia", {
-          mp3: "http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
+          mp3: track_url
         }).jPlayer("play");
       },
       supplied: "mp3",
@@ -158,6 +162,7 @@ jQuery(function() {
       return event_queue.seekTo(t);
     });
   };
+  return track.ready(trackReady);
 });
 appear = function(word) {
   return $("#animation").html(word);
