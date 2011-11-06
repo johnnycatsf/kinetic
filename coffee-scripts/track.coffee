@@ -71,6 +71,6 @@ class Track
   getBeats: ->
     actual_beats = []
     for beat in @beats
-      if beat.confidence > 0.3
+      if beat.confidence > 0.4
         actual_beats.push(beat.start * 1000)
     return actual_beats
