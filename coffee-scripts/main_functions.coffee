@@ -140,13 +140,13 @@ class Pixar
 
   @animations =
     fade: (options) ->
-      @.fadeIn('fast').delay(1000).fadeOut()
+      @.show().delay(1000).fadeOut()
 
     bump: (options) ->
-      @.fadeIn('fast').delay(1000).fadeOut()
+      @.show().delay(1000).fadeOut()
 
     jump: (options) ->
-      @.fadeIn('fast').delay(1000).fadeOut()
+      @.show().delay(1000).fadeOut()
 
 class Routine
   constructor: (@desired_duration, @el$, @event_queue) ->
@@ -179,16 +179,29 @@ jQuery ->
   jp$ = $("#jplayer")
   jEvent = $.jPlayer.event
 
-  track = new Track "TRQCKVG131BAB7368F"
-  track.ready trackReady
+  # jp$.jPlayer
+  #   ready: ->
+  #     $(@).jPlayer "setMedia",
+  #       # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
+  #       # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+  #       # mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
+  #       mp3:"http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
+  #     .jPlayer("play")
+  #   supplied:"mp3"
+  #   swfPath:"/javascripts/Jplayer.swf"
 
+  track = new Track "TRQCKVG131BAB7368F"
   trackReady = ->
     event_queue = new EventQueue TestData.test_string, 
                                  track.getBeats(),
-                                 tack.getSongEnd()
+                                 track.getSongEnd()
+    console.log "Setup error queue", event_queue
 
+
+    console.log "Setting up jPlayer with music!"
     jp$.jPlayer
       ready: ->
+        console.log "Ready! Attaching media"
         $(@).jPlayer "setMedia",
           # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
           # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
@@ -202,3 +215,5 @@ jQuery ->
       t = e.jPlayer.status.currentTime * 1000
       console.log "Time update:", t
       event_queue.seekTo t
+
+  track.ready trackReady

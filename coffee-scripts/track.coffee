@@ -41,7 +41,7 @@ class Track
     console.log(data)
     #data is a json object containing detailed track analysis
     @beats = data.beats
-    @song_end = data.tack.duration
+    @song_end = data.track.duration * 1000
     # when complete, say i'm ready
     @ready_callback() if @ready_callback?
 
@@ -54,5 +54,5 @@ class Track
     actual_beats = []
     for beat in @beats
       if beat.confidence > 0.5
-        actual_beats.add(beat.start)
+        actual_beats.push(beat.start * 1000)
     return actual_beats
