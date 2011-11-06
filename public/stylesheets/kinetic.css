@@ -91,12 +91,12 @@ td{vertical-align:top;}
 .bold{font-family:"BrandonGrotesqueBold",sans-serif;}
 .blue{color:#73cbcd;}
 @font-face{font-family:'BrandonGrotesqueMedium';src:url('brandon_med-webfont.eot');src:url('brandon_med-webfont.eot?#iefix') format('embedded-opentype'),url('brandon_med-webfont.woff') format('woff'),url('brandon_med-webfont.ttf') format('truetype'),url('brandon_med-webfont.svg#BrandonGrotesqueMedium') format('svg');font-weight:normal;font-style:normal;}@font-face{font-family:'BrandonGrotesqueRegular';src:url('brandon_reg-webfont.eot');src:url('brandon_reg-webfont.eot?#iefix') format('embedded-opentype'),url('brandon_reg-webfont.woff') format('woff'),url('brandon_reg-webfont.ttf') format('truetype'),url('brandon_reg-webfont.svg#BrandonGrotesqueRegular') format('svg');font-weight:normal;font-style:normal;}@font-face{font-family:'BrandonGrotesqueBold';src:url('brandon_bld-webfont.eot');src:url('brandon_bld-webfont.eot?#iefix') format('embedded-opentype'),url('brandon_bld-webfont.woff') format('woff'),url('brandon_bld-webfont.ttf') format('truetype'),url('brandon_bld-webfont.svg#BrandonGrotesqueBold') format('svg');font-weight:normal;font-style:normal;}html{height:auto;min-height:100%;}
-body{position:relative;height:auto;min-height:100%;color:#e0e0e0;font-family:"BrandonGrotesqueRegular",sans-serif;font-size:16px;line-height:1.5;letter-spacing:1px;}
+body{position:relative;height:auto;min-height:100%;color:#e0e0e0;font-family:"BrandonGrotesqueRegular",sans-serif;font-size:16px;line-height:1.5;letter-spacing:1px;background:url(/images/type_bg.png) repeat;}
 hr{color:#444444;background:#444444;border:0;-webkit-box-shadow:1px 1px 2px #111111;-moz-box-shadow:1px 1px 2px #111111;box-shadow:1px 1px 2px #111111;}
 a{color:#73cbcd;text-decoration:none;}a:hover{color:#40b1b3;}
 a:active{color:#6bc8ca;}
 a:visited{color:#73cbcd;}
-h1{font-size:32px;font-family:"BrandonGrotesqueMedium",sans-serif;}
+h1{font-size:32px;font-family:"BrandonGrotesqueMedium",sans-serif;letter-spacing:3px;color:#73cbcd;}
 h2{font-size:24px;}
 h3{font-size:18px;}
 h4{font-size:16px;}
@@ -123,10 +123,22 @@ button:active{background:#73cbcd url(/static/images/button_blue_active_bg.png) r
 .error{color:#f8473f;}
 .inputHintOverlay{-khtml-opacity:0.5;-moz-opacity:0.5;opacity:0.5;filter:alpha(opacity=50);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";font-size:14px;}
 .loading_module{width:100%;height:100%;text-align:center;color:#aaaaaa;}
+.text_el{float:left;margin:.35em;}
+#in_text{display:none;width:500px;margin:45px auto 0 auto;}#in_text textarea{border:2px solid #333333;width:500px;height:200px;}
+#animation{padding:50px;font-size:42px;margin-top:45px;}
 .wrap{position:relative;width:800px;margin:0 auto;}
-#header{position:fixed;top:0px;left:0px;width:100%;height:100px;z-index:2;}
+#header{position:fixed;height:35px;padding:5px;top:0px;left:0px;width:98%;z-index:2;zoom:1;}#header:before,#header:after{display:table;content:"";zoom:1;*display:inline;}
+#header:after{clear:both;}
+#logo{float:left;}
+#description{font-size:14px;margin-left:10px;width:300px;float:left;}
+#edit_text{width:100px;margin:5px auto 0 auto;}
+#mood_control{float:right;}#mood_control input[type="radio"]{margin-left:10px;}
+#mood_control #mood{float:left;}
+#mood_control #mood_form{margin-left:5px;float:left;}
+#mood_control #play_song{margin-left:10px;float:left;}
 #animation{position:relative;z-index:1;}
-#controls{position:fixed;bottom:0px;left:0px;z-index:2;width:100%;height:100px;}
+#controls{position:fixed;bottom:0px;left:0px;z-index:2;width:100%;zoom:1;}#controls:before,#controls:after{display:table;content:"";zoom:1;*display:inline;}
+#controls:after{clear:both;}
 .header-item{float:left;}
 .onehalf{width:50%;}
 .onefourth{width:25%;}

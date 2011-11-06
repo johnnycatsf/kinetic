@@ -78,7 +78,7 @@ class EventQueue
     for t,index in @beats
       # FIXME need to check not overflowing index
       if index >= @text_array.length then break
-      el$ = $("<div>#{@text_array[index]}</div>")
+      el$ = $("<div class='text_el'>#{@text_array[index]}</div>")
       @_event_queue.push
         time: t
         animation: Pixar.getRandom()

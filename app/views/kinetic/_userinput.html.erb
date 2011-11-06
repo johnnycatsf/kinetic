@@ -1,26 +1,25 @@
-<div class="header-item onefourth">
-  <h1> Kinetic </h1>
-  <p> Enter the text of your choice and choose a song mood and we'll put your words to music! </p>
+<div id="logo">
+  <h1> KINETIC </h1>
 </div>
 
-<div class="header-item onehalf">
-  <textarea id="text" type="text">please type your words here...</textarea>
-</div>
+<div id="description"><p>Enter the text of your choice and choose a song mood and we'll put your words to music!
+</p></div>
 
-<div class="header-item oneeighth">
-  <h3>Mood</h3>
-  <div id="moods">
-      <input type="radio" name="mood" value="happy" checked> happy
-      <input type="radio" name="mood" value="sad"> sad 
-      <input type="radio" name="mood" value="angry"> angry 
-      <input type="radio" name="mood" value="relaxing"> relaxing 
-      <input type="radio" name="mood" value="excited"> excited 
+<div id="mood_control">
+  <div id="mood">Select mood:</div>
+
+  <div id="mood_form">
+    <input type="radio" name="mood" value="happy" checked> happy
+    <input type="radio" name="mood" value="sad"> sad 
+    <input type="radio" name="mood" value="angry"> angry 
+    <input type="radio" name="mood" value="relaxing"> relaxing 
+    <input type="radio" name="mood" value="excited"> excited 
   </div><!-- end moods -->
-</div>
 
-<div class="header-item oneeighth">
   <button id="play_song"> GO </button>
 </div>
+
+<div id="edit_text"><a href="javascript:void();">Edit text</a></div>
 
 <input type="hidden" value="13725" name="fma-track-id" />
 <input type="hidden" value="TRQCKVG131BAB7368F" name="echonest-track-id" />

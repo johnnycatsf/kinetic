@@ -6,6 +6,27 @@
 
 @import "lib/lib.less";
 
+.text_el {
+  float:left;
+  margin:.35em;
+}
+
+#in_text {
+  display:none;
+  width:500px;
+  margin:45px auto 0 auto;
+  textarea {
+    border:2px solid @grey3;
+    width:500px;
+    height:200px;
+  }
+}
+#animation {
+  padding:50px;
+  font-size:42px;
+  margin-top:45px;
+}
+
 .wrap {
   position:relative;
   width:800px;
@@ -14,11 +35,49 @@
 
 #header {
   position:fixed;
+  height:35px;
+  padding:5px;
   top:0px;
   left: 0px;
-  width: 100%;
-  height: 100px;
+  width: 98%;
   z-index: 2;
+  .clear;
+}
+
+#logo {
+  float:left;
+}
+#description {
+  font-size:14px;
+  margin-left:10px;
+  width:300px;
+  float:left;
+}
+
+#edit_text {
+  width:100px;
+  margin: 5px auto 0 auto;
+}
+
+#mood_control {
+  float:right;
+
+  input[type="radio"] {
+    margin-left:10px;
+  }
+
+  #mood {
+    float:left;
+  }
+  #mood_form {
+    margin-left:5px;
+    float:left;
+  }
+
+  #play_song {
+    margin-left:10px;
+    float:left;
+  }
 }
 
 #animation {
@@ -32,7 +91,7 @@
   left: 0px;
   z-index: 2;
   width: 100%;
-  height: 100px;
+  .clear;
 }
 
 .header-item {
@@ -42,7 +101,7 @@
 .onehalf {
   width: 50%;
 }
-  
+
 .onefourth {
   width: 25%;
 }
