@@ -118,7 +118,10 @@ EventQueue = (function() {
     this.in_string = in_string;
     this.beats = beats;
     this.song_length = song_length;
+    this.start = __bind(this.start, this);
+    this.stop = __bind(this.stop, this);
     this._event_queue = [];
+    this.rate = 15;
     this.text_array = in_string.split(" ");
     this._linkBeats();
   }
@@ -151,25 +154,46 @@ EventQueue = (function() {
     }
     return this.song_length;
   };
+  EventQueue.prototype.stop = function(e) {
+    console.log(e, e.jPlayer.status);
+    console.log("STOPPING");
+    this.playing = false;
+    return clearTimeout(this.timeout);
+  };
+  EventQueue.prototype.start = function(e) {
+    console.log("STARTING");
+    return this.playing = true;
+  };
   EventQueue.prototype.seekTo = function(seek_time) {
-    var rate, set_interval_time;
     this.seek_time = seek_time;
-    if (this.timer != null) {
-      clearInterval(this.timer);
+    if (this.playing !== true) {
+      return;
     }
-    rate = 15;
-    set_interval_time = this.seek_time;
-    return this.timer = setInterval(__bind(function() {
-      var item, _i, _len, _ref, _ref2, _results;
-      set_interval_time += rate;
-      _ref = this._event_queue;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        _results.push((set_interval_time - rate <= (_ref2 = item.time) && _ref2 <= set_interval_time + rate) ? item.animation.apply(item.element) : void 0);
+    console.log("SEEKING TO: " + this.seek_time);
+    if (this.timeout != null) {
+      console.log("CLEARING TIMEOUT: " + this.timeout);
+      clearTimeout(this.timeout);
+    }
+    return this._runEventQueue(this.seek_time);
+  };
+  EventQueue.prototype._runEventQueue = function(start_time) {
+    var item, next_start_time, _i, _len, _ref, _ref2;
+    console.log("Frame: " + start_time);
+    if (this.seek_time > start_time) {
+      return;
+    }
+    _ref = this._event_queue;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      item = _ref[_i];
+      if ((start_time - this.rate <= (_ref2 = item.time) && _ref2 <= start_time + this.rate)) {
+        item.animation.apply(item.element);
+        console.log("Playing: '" + item.element + "'");
       }
-      return _results;
-    }, this), rate);
+    }
+    next_start_time = start_time + this.rate;
+    return this.timeout = setTimeout(__bind(function() {
+      return this._runEventQueue(next_start_time);
+    }, this), this.rate);
   };
   return EventQueue;
 })();
@@ -260,12 +284,16 @@ jQuery(function() {
       supplied: "mp3",
       swfPath: "/javascripts/Jplayer.swf"
     });
-    return jp$.bind(jEvent.timeupdate, function(e) {
+    jp$.bind(jEvent.timeupdate, function(e) {
       var t;
       t = e.jPlayer.status.currentTime * 1000;
       console.log("Time update:", t);
       return event_queue.seekTo(t);
     });
+    jp$.bind(jEvent.abort, event_queue.stop);
+    jp$.bind(jEvent.pause, event_queue.stop);
+    jp$.bind(jEvent.ended, event_queue.stop);
+    return jp$.bind(jEvent.play, event_queue.start);
   };
   return track.ready(trackReady);
 });
