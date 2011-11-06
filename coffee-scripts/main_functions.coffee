@@ -239,6 +239,9 @@ class SongSearch
     $("input:hidden[name=fma-id]").val(fma_id)
     $("input:hidden[name=echonest-track-id]").val(echonest_track_id)
 
+
+    #FIXME Manual song override
+
     window.track = new Track echonest_track_id, fma_id
     window.track.ready window.trackReady
 
