@@ -207,18 +207,60 @@ class Routine
     # if so, take up remaining slack with an exit-type animation
     # if not, load up a new animation of appropriate time class
 
+class SongSearch
+  @searchSongs: =>
+    console.log "Searching for a song!"
+    mood = $("input:radio[name=mood]:checked").val()
+    console.log(mood)
+    $.ajax
+      type: 'GET'
+      url: "http://developer.echonest.com/api/v4/song/search?bucket=id:fma&bucket=tracks"
+      data: 
+        api_key: "CJMTSEJKZGMYYF9UI"
+        mood: mood
+        limit: "true"
+      success: SongSearch.searchSongsCallback
+      error: SongSearch.errorCallback
+      dataType: "json"
+
+  @searchSongsCallback: (data, textStatus, jqXHR) =>
+    console.log("SEARCH SONGS CALLBACK")  
+    console.log(data)
+
+    # data.response.songs is a list of songs with title, artist_name, id, etc.
+    # we'll choose the first one the fits the users requests   
+    song = data.response.songs[0]
+    fma_str = song.tracks[0].foreign_id
+    fma_arr = fma_str.split(":")
+    fma_id = fma_arr[fma_arr.length-1]
+    echonest_track_id = song.tracks[0].id
+
+    console.log("SONG: "+song.title + " ARTIST: "+song.artist_name + "TRACK ID: " + echonest_track_id+" FMA ID: "+fma_id)
+    $("input:hidden[name=fma-id]").val(fma_id)
+    $("input:hidden[name=echonest-track-id]").val(echonest_track_id)
+
+    window.track = new Track echonest_track_id, fma_id
+    window.track.ready window.trackReady
+
+  @errorCallback: (jqXHR) =>
+    console.log("ERROR")
+    console.log(jqXHR)
+
 jQuery ->
   jp$ = $("#jplayer")
   jEvent = $.jPlayer.event
 
-  track = new Track "TRBOFQJ131BAB774CC", 34681
+  $("#play_song").click SongSearch.searchSongs
 
-  trackReady = ->
+  # track = new Track "TRBOFQJ131BAB774CC", 34681
+
+  window.trackReady = ->
+    track = window.track
     event_queue = new EventQueue TestData.test_string, 
                                  track.getBeats(),
                                  track.getSongEnd()
 
-    console.log "Setup error queue", event_queue
+    console.log "Setup queue", event_queue
 
     track_url = track.getTrackUrl()
     console.log track_url
@@ -247,5 +289,3 @@ jQuery ->
     jp$.bind jEvent.ended, event_queue.stop
 
     jp$.bind jEvent.play, event_queue.start
-
-  track.ready trackReady

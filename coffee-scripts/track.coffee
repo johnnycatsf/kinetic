@@ -1,9 +1,10 @@
 class Track
   constructor: (@echonest_track_id, @fma_id) ->
+    console.log "Creating new song with ID: #{@echonest_track_id} and fma_id: #{@fma_id}"
     @analyzeSong()
 
   ready: (@ready_callback) ->
-    
+
   analyzeSong: ->
     $.ajax
       type: 'GET'

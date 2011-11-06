@@ -25,7 +25,6 @@ searchSongsCallback = (data, textStatus, jqXHR) ->
   console.log("SONG: "+song.title + " ARTIST: "+song.artist_name + "TRACK ID: " + echonest_track_id+" FMA ID: "+fma_id)
   $("input:hidden[name=fma-id]").val(fma_id)
   $("input:hidden[name=echonest-track-id]").val(echonest_track_id)
-  
 
 errorCallback = (jqXHR) ->
   console.log("ERROR")
