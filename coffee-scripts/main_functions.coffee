@@ -190,13 +190,15 @@ jQuery ->
   #   supplied:"mp3"
   #   swfPath:"/javascripts/Jplayer.swf"
 
-  track = new Track "TRQCKVG131BAB7368F"
+  track = new Track "TRQUWYF131BAB75456", 24209
   trackReady = ->
     event_queue = new EventQueue TestData.test_string, 
                                  track.getBeats(),
                                  track.getSongEnd()
     console.log "Setup error queue", event_queue
 
+    track_url = track.getTrackUrl()
+    console.log track_url
 
     console.log "Setting up jPlayer with music!"
     jp$.jPlayer
@@ -206,7 +208,8 @@ jQuery ->
           # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
           # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
           # mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
-          mp3:"http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
+          # mp3:"http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
+          mp3:track_url
         .jPlayer("play")
       supplied:"mp3"
       swfPath:"/javascripts/Jplayer.swf"
