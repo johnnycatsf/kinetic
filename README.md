@@ -56,7 +56,9 @@ cake watch # use this after you have compiled for the first time to build
 
 RUNNING LOCALLY
 ================
-Go into the top level directory and run
+Make sure that you are connected to the internet so that the Echo Nest API requests will work.
+
+Then go into the top level directory and run
     rails server
 
 Then open a browser and visit "localhost:3000"
