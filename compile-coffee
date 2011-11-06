@@ -1,2 +1,0 @@
-#!/bin/sh
-coffee -o ./public/javascripts/ -bcw ./coffee-scripts/*.coffee
