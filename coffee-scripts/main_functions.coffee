@@ -88,8 +88,6 @@ class EventQueue
       if @seek_time - 250 <= item.time <= @seek_time + 250
         item.animation.apply item.element
 
-class Animator
-
 # method.apply(el$, options)
 
 # Animation.get("name", options) ------- returns callback method
@@ -116,23 +114,60 @@ class Pixar
       self.postAnimate(@)
 
   @preAnimate: (el$) ->
-    console.log "Appending ", el$
     $("#animation").append el$
 
   @postAnimate: (el$) ->
 
+  # Beat length
+    # Each animation till next beat
+  # Routine
+    # fade
+    # bounce
+    # pump
+    # swipe
+    # pump
+    # pump
+    # out
+    #
+  # Input is total amount of routine time
+  # Each animation gets passed in total amount of time.
+
   @animations =
     fade: (options) ->
-      console.log "Fade"
       @.fadeIn('fast').delay(1000).fadeOut()
 
     bump: (options) ->
-      console.log "bump"
       @.fadeIn('fast').delay(1000).fadeOut()
 
     jump: (options) ->
-      console.log "jump"
       @.fadeIn('fast').delay(1000).fadeOut()
+
+class Routine
+  constructor: (@desired_duration, @el$, @event_queue) ->
+
+  #FIXME Catch end of song case
+
+  # start should always be called on a beat
+  start: (start_time) ->
+    # next_beat is absolute time
+    next_beat = @event_queue.getNextBeat()
+    time_till_next = next_beat - start_time
+
+    if next_beat >= start_time + @desired_duration
+      animation = Pixar.get(time_till_next, "exit")
+      animation.apply @el$
+    else
+      animation = Pixar.get(time_till_next)
+      animation.apply @el$, @start(start_time)
+
+    # Get animation
+    # Set animation params to last for rel_time
+    # Call animation
+    #
+    # When animation is done, grab the next beat
+    # See if next beat is past desired_time
+    # if so, take up remaining slack with an exit-type animation
+    # if not, load up a new animation of appropriate time class
 
 jQuery ->
   event_queue = new EventQueue TestData.test_string, TestData.timestamps()
