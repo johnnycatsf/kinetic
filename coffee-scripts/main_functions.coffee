@@ -90,9 +90,17 @@ class EventQueue
   # Gets called by the music player. The seek time (in ms),
   # specifies how far along the song we need to be.
   seekTo: (@seek_time) ->
-    for item in @_event_queue
-      if @seek_time - 250 <= item.time <= @seek_time + 250
-        item.animation.apply item.element
+    clearInterval @timer if @timer?
+
+    rate = 15
+    set_interval_time = @seek_time
+    @timer = setInterval =>
+      #FIXME Use sequential callback not setInterval
+      set_interval_time += rate
+      for item in @_event_queue
+        if set_interval_time - rate <= item.time <= set_interval_time + rate
+          item.animation.apply item.element
+    , rate
 
 # method.apply(el$, options)
 
@@ -179,22 +187,13 @@ jQuery ->
   jp$ = $("#jplayer")
   jEvent = $.jPlayer.event
 
-  # jp$.jPlayer
-  #   ready: ->
-  #     $(@).jPlayer "setMedia",
-  #       # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
-  #       # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
-  #       # mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
-  #       mp3:"http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
-  #     .jPlayer("play")
-  #   supplied:"mp3"
-  #   swfPath:"/javascripts/Jplayer.swf"
+  track = new Track "TRBOFQJ131BAB774CC", 34681
 
-  track = new Track "TRQUWYF131BAB75456", 24209
   trackReady = ->
     event_queue = new EventQueue TestData.test_string, 
                                  track.getBeats(),
                                  track.getSongEnd()
+
     console.log "Setup error queue", event_queue
 
     track_url = track.getTrackUrl()
