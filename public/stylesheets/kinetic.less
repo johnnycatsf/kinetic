@@ -6,12 +6,24 @@
 
 @import "lib/lib.less";
 
-body {
-  background: url(/images/type_bg.png) repeat;
-}
-
 .wrap {
   position:relative;
   width:800px;
   margin: 0 auto;
+}
+
+#container {
+  min-height:100%;
+  position:relative;
+}
+
+body {
+  background: url(/images/type_bg.png) repeat;
+  padding-bottom:60px;   /* Height of the player */
+}
+
+#player {
+  position:absolute;
+  bottom:0;
+  height:60px;   /* Height of the player */
 }
