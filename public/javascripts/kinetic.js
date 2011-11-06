@@ -1,93 +1,4 @@
-var EventQueue, Pixar, Routine, TestData, Track, appear, getFMAFile, searchSongs;
-Track = (function() {
-  function Track(echonest_track_id, fma_id) {
-    this.echonest_track_id = echonest_track_id;
-    this.fma_id = fma_id;
-    analyzeSong;
-  }
-  Track.prototype.ready = function(ready_callback) {
-    this.ready_callback = ready_callback;
-  };
-  Track.prototype.analyzeSong = function() {
-    return $.ajax({
-      type: 'GET',
-      url: "http://developer.echonest.com/api/v4/track/profile",
-      data: {
-        api_key: "CJMTSEJKZGMYYF9UI",
-        id: this.echonest_track_id,
-        bucket: "audio_summary"
-      },
-      success: this.analyzeSongCallback,
-      error: this.errorCallback,
-      dataType: "json"
-    });
-  };
-  Track.prototype.analyzeSongCallback = function(data, textStatus, jqXHR) {
-    var analysis_url;
-    console.log(data);
-    console.log("Retrieving analysis for " + data.response.track.title);
-    console.log("Analysis url is " + data.response.track.audio_summary.analysis_url);
-    analysis_url = data.response.track.audio_summary.analysis_url;
-    return this.retrieveAnalysis(analysis_url);
-  };
-  Track.prototype.retrieveAnalysis = function(analysis_url) {
-    return $.ajax({
-      type: 'GET',
-      url: "/track_analysis",
-      data: {
-        analysis_url: analysis_url
-      },
-      success: this.retrieveAnalysisCallback,
-      error: this.errorCallback,
-      dataType: "json"
-    });
-  };
-  Track.prototype.retrieveAnalysisCallback = function(data, textStatus, jqXHR) {
-    console.log("RETRIEVE ANALYSIS CALLBACK");
-    console.log(data);
-    this.beats = data.beats;
-    this.song_end = data.track.duration;
-    return setSongURL();
-  };
-  Track.prototype.setSongURL = function() {
-    return $.ajax({
-      type: 'GET',
-      url: "/get_fma_track_url",
-      data: {
-        track_url: "http://freemusicarchive.org/services/playlists/embed/track/" + this.fma_id + ".xml"
-      },
-      success: this.setSongURLCallback,
-      error: this.errorCallback,
-      dataType: "xml"
-    });
-  };
-  Track.prototype.setSongURLCallback = function(data, textStatus, jqXHR) {
-    console.log(data);
-    this.song = data.track.download;
-    if (this.ready_callback != null) {
-      return this.ready_callback();
-    }
-  };
-  Track.prototype.errorCallback = function(jqXHR, textstatus, error_thrown) {
-    return console.error("there was an error", jqXHR, textstatus, error_thrown);
-  };
-  Track.prototype.getSongEnd = function() {
-    return this.song_end;
-  };
-  Track.prototype.getBeats = function() {
-    var actual_beats, beat, _i, _len, _ref;
-    actual_beats = [];
-    _ref = this.beats;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      beat = _ref[_i];
-      if (beat.confidence > 0.5) {
-        actual_beats.add(beat.start);
-      }
-    }
-    return actual_beats;
-  };
-  return Track;
-})();
+var EventQueue, Pixar, Routine, TestData, appear, searchSongs;
 TestData = (function() {
   function TestData() {}
   TestData.test_string = "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.  Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.  But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
@@ -251,13 +162,13 @@ jQuery(function() {
 appear = function(word) {
   return $("#animation").html(word);
 };
-searchSongs = function(title) {
+searchSongs = function(mood) {
   return $.ajax({
     type: 'GET',
     url: "http://developer.echonest.com/api/v4/song/search",
     data: {
       api_key: "CJMTSEJKZGMYYF9UI",
-      title: title,
+      mood: "sad",
       bucket: "id:fma",
       limit: "true"
     },
@@ -265,7 +176,4 @@ searchSongs = function(title) {
     error: errorCallback,
     dataType: "json"
   });
-};
-getFMAFile = function(fma_song_id) {
-  return "http://freemusicarchive.org/services/playlists/embed/track/" + fma_song_id + ".xml";
 };

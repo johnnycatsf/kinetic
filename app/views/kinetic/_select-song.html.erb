@@ -1,11 +1,41 @@
-
-<div id="moods">
+<div style="float:left">
+<h2>Mood</h2>
   <input type="radio" name="mood" value="happy"> happy<br>
   <input type="radio" name="mood" value="sad"> sad <br>
   <input type="radio" name="mood" value="angry"> angry <br>
   <input type="radio" name="mood" value="relaxing"> relaxing <br>
-  <input type="radio" name="mood" value="excited"> excited 
+  <input type="radio" name="mood" value="excited"> excited <br />
+  <input type="radio" name="mood" value="any"> any of the above<br>
 </div>
 
+<div style="float:left">
+<h2>Style</h2>
+  <input type="radio" name="style" value="alternative"> alternative<br>
+  <input type="radio" name="style" value="jazz"> jazz <br>
+  <input type="radio" name="style" value="classical"> classical <br>
+  <input type="radio" name="style" value="indie"> indie <br>
+  <input type="radio" name="style" value="rock"> rock <br />  
+  <input type="radio" name="style" value="any"> any of the above<br>
+</div>
+
+<div style="float:left">
+<h2>Tempo</h2>
+<input onchange="$('#tempo').html(this.value)" type="range" min="0" max="100" value="25"/> 
+<span id="tempo">25</span>
+</div>
+
+<div style="float:left">
+<h2>Loudness</h2>
+<input onchange="$('#loudness').html(this.value)" type="range" min="0" max="100" value="25"/> 
+<span id="loudness">25</span>
+</div>
+
+<div style="float:left">
+<h2>Energy</h2>
+<input onchange="$('#energy').html(this.value)" type="range" min="0" max="100" value="25"/> 
+<span id="energy">25</span>
+</div>
+
+<div style="clear:both;"></div>
 <input id="fma-song-id" type="hidden" value="13725" name="fma-song-id" />
 <input id="echonest-song-id" type="hidden" value="TRQCKVG131BAB7368F" name="echonest-song-id" />
