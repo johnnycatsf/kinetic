@@ -1,4 +1,4 @@
-var EventQueue, Pixar, Routine, TestData, Track, appear, errorCallback, searchSongs, searchSongsCallback;
+var EventQueue, Pixar, Routine, SongSearch, TestData, Track, appear, errorCallback, searchSongs, searchSongsCallback;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 Track = (function() {
   function Track(echonest_track_id, fma_id) {
@@ -7,6 +7,7 @@ Track = (function() {
     this.setSongURLCallback = __bind(this.setSongURLCallback, this);
     this.retrieveAnalysisCallback = __bind(this.retrieveAnalysisCallback, this);
     this.analyzeSongCallback = __bind(this.analyzeSongCallback, this);
+    console.log("Creating new song with ID: " + this.echonest_track_id + " and fma_id: " + this.fma_id);
     this.analyzeSong();
   }
   Track.prototype.ready = function(ready_callback) {
@@ -118,7 +119,10 @@ EventQueue = (function() {
     this.in_string = in_string;
     this.beats = beats;
     this.song_length = song_length;
+    this.start = __bind(this.start, this);
+    this.stop = __bind(this.stop, this);
     this._event_queue = [];
+    this.rate = 15;
     this.text_array = in_string.split(" ");
     this._linkBeats();
   }
@@ -151,25 +155,46 @@ EventQueue = (function() {
     }
     return this.song_length;
   };
+  EventQueue.prototype.stop = function(e) {
+    console.log(e, e.jPlayer.status);
+    console.log("STOPPING");
+    this.playing = false;
+    return clearTimeout(this.timeout);
+  };
+  EventQueue.prototype.start = function(e) {
+    console.log("STARTING");
+    return this.playing = true;
+  };
   EventQueue.prototype.seekTo = function(seek_time) {
-    var rate, set_interval_time;
     this.seek_time = seek_time;
-    if (this.timer != null) {
-      clearInterval(this.timer);
+    if (this.playing !== true) {
+      return;
     }
-    rate = 15;
-    set_interval_time = this.seek_time;
-    return this.timer = setInterval(__bind(function() {
-      var item, _i, _len, _ref, _ref2, _results;
-      set_interval_time += rate;
-      _ref = this._event_queue;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        _results.push((set_interval_time - rate <= (_ref2 = item.time) && _ref2 <= set_interval_time + rate) ? item.animation.apply(item.element) : void 0);
+    console.log("SEEKING TO: " + this.seek_time);
+    if (this.timeout != null) {
+      console.log("CLEARING TIMEOUT: " + this.timeout);
+      clearTimeout(this.timeout);
+    }
+    return this._runEventQueue(this.seek_time);
+  };
+  EventQueue.prototype._runEventQueue = function(start_time) {
+    var item, next_start_time, _i, _len, _ref, _ref2;
+    console.log("Frame: " + start_time);
+    if (this.seek_time > start_time) {
+      return;
+    }
+    _ref = this._event_queue;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      item = _ref[_i];
+      if ((start_time - this.rate <= (_ref2 = item.time) && _ref2 <= start_time + this.rate)) {
+        item.animation.apply(item.element);
+        console.log("Playing: '" + item.element + "'");
       }
-      return _results;
-    }, this), rate);
+    }
+    next_start_time = start_time + this.rate;
+    return this.timeout = setTimeout(__bind(function() {
+      return this._runEventQueue(next_start_time);
+    }, this), this.rate);
   };
   return EventQueue;
 })();
@@ -238,15 +263,61 @@ Routine = (function() {
   };
   return Routine;
 })();
+SongSearch = (function() {
+  function SongSearch() {
+    this.SongSearch = __bind(this.SongSearch, this);
+    this.SongSearch = __bind(this.SongSearch, this);
+    this.SongSearch = __bind(this.SongSearch, this);
+  }
+  SongSearch.searchSongs = function() {
+    var mood;
+    console.log("Searching for a song!");
+    mood = $("input:radio[name=mood]:checked").val();
+    console.log(mood);
+    return $.ajax({
+      type: 'GET',
+      url: "http://developer.echonest.com/api/v4/song/search?bucket=id:fma&bucket=tracks",
+      data: {
+        api_key: "CJMTSEJKZGMYYF9UI",
+        mood: mood,
+        limit: "true"
+      },
+      success: SongSearch.searchSongsCallback,
+      error: SongSearch.errorCallback,
+      dataType: "json"
+    });
+  };
+  SongSearch.searchSongsCallback = function(data, textStatus, jqXHR) {
+    var echonest_track_id, fma_arr, fma_id, fma_str, song;
+    console.log("SEARCH SONGS CALLBACK");
+    console.log(data);
+    song = data.response.songs[0];
+    fma_str = song.tracks[0].foreign_id;
+    fma_arr = fma_str.split(":");
+    fma_id = fma_arr[fma_arr.length - 1];
+    echonest_track_id = song.tracks[0].id;
+    console.log("SONG: " + song.title + " ARTIST: " + song.artist_name + "TRACK ID: " + echonest_track_id + " FMA ID: " + fma_id);
+    $("input:hidden[name=fma-id]").val(fma_id);
+    $("input:hidden[name=echonest-track-id]").val(echonest_track_id);
+    window.track = new Track(echonest_track_id, fma_id);
+    return window.track.ready(window.trackReady);
+  };
+  SongSearch.errorCallback = function(jqXHR) {
+    console.log("ERROR");
+    return console.log(jqXHR);
+  };
+  return SongSearch;
+})();
 jQuery(function() {
-  var jEvent, jp$, track, trackReady;
+  var jEvent, jp$;
   jp$ = $("#jplayer");
   jEvent = $.jPlayer.event;
-  track = new Track("TRBOFQJ131BAB774CC", 34681);
-  trackReady = function() {
-    var event_queue, track_url;
+  $("#play_song").click(SongSearch.searchSongs);
+  return window.trackReady = function() {
+    var event_queue, track, track_url;
+    track = window.track;
     event_queue = new EventQueue(TestData.test_string, track.getBeats(), track.getSongEnd());
-    console.log("Setup error queue", event_queue);
+    console.log("Setup queue", event_queue);
     track_url = track.getTrackUrl();
     console.log(track_url);
     console.log("Setting up jPlayer with music!");
@@ -260,14 +331,17 @@ jQuery(function() {
       supplied: "mp3",
       swfPath: "/javascripts/Jplayer.swf"
     });
-    return jp$.bind(jEvent.timeupdate, function(e) {
+    jp$.bind(jEvent.timeupdate, function(e) {
       var t;
       t = e.jPlayer.status.currentTime * 1000;
       console.log("Time update:", t);
       return event_queue.seekTo(t);
     });
+    jp$.bind(jEvent.abort, event_queue.stop);
+    jp$.bind(jEvent.pause, event_queue.stop);
+    jp$.bind(jEvent.ended, event_queue.stop);
+    return jp$.bind(jEvent.play, event_queue.start);
   };
-  return track.ready(trackReady);
 });
 appear = function(word) {
   return $("#animation").html(word);
