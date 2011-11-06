@@ -1,0 +1,14 @@
+<h1> Welcome to kinectic! </h1>
+<div id="user-input">
+
+   <textarea id="text" type="text">please type your words here...</textarea>
+
+   <h2> Now select a song... </h2>
+
+   <%= render :partial => "select-song" %> 
+
+   <input id="fma-song-id" type="hidden" value="13725" name="fma-song-id" />
+   <input id="echonest-song-id" type="hidden" value="TRQCKVG131BAB7368F" name="echonest-song-id" />
+   <button onclick="play()">Play</button>
+</div><!-- end user-input-->
+
