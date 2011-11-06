@@ -107,4 +107,4 @@ jQuery ->
     swfPath:"/javascripts/Jplayer.swf"
 
   jp$.bind jEvent.timeupdate, (e) ->
-    console.log "Time update:", e.jPlayer.status.currentTime * 1000
+    #console.log "Time update:", e.jPlayer.status.currentTime * 1000
