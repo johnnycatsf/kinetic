@@ -16,7 +16,8 @@ targets =
   'kinetic' : [
     'main_functions',
     'animations',
-    'echonest-functions'
+    'echonest-functions',
+    'track'
   ]
 
 task "build", "Build all targets", ->
