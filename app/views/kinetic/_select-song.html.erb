@@ -1,44 +1,11 @@
-<div style="float:left">
 <h3>Mood</h3>
   <div id="moods">
-    <input type="radio" name="mood" value="happy"> happy<br>
-    <input type="radio" name="mood" value="sad" checked> sad <br>
+    <input type="radio" name="mood" value="happy" checked> happy<br>
+    <input type="radio" name="mood" value="sad"> sad <br>
     <input type="radio" name="mood" value="angry"> angry <br>
     <input type="radio" name="mood" value="relaxing"> relaxing <br>
     <input type="radio" name="mood" value="excited"> excited <br />
-    <input type="radio" name="mood" value="any"> any of the above<br>
   </div><!-- end moods -->
-</div>
-
-<div style="float:left">
-<h3>Style</h3>
-  <input type="radio" name="style" value="alternative"> alternative<br>
-  <input type="radio" name="style" value="jazz"> jazz <br>
-  <input type="radio" name="style" value="classical"> classical <br>
-  <input type="radio" name="style" value="indie"> indie <br>
-  <input type="radio" name="style" value="rock"> rock <br />  
-  <input type="radio" name="style" value="any" checked> any of the above<br>
-</div>
-
-<div style="float:left">
-<h3>Tempo</h3>
-<input onchange="$('#tempo').html(this.value)" type="range" min="0" max="100" value="25"/> 
-<span id="tempo">25</span>
-</div>
-
-<div style="float:left">
-<h3>Loudness</h3>
-<input onchange="$('#loudness').html(this.value)" type="range" min="0" max="100" value="25"/> 
-<span id="loudness">25</span>
-</div>
-
-<div style="float:left">
-<h3>Energy</h3>
-<input onchange="$('#energy').html(this.value)" type="range" min="0" max="100" value="25"/> 
-<span id="energy">25</span>
-</div>
-
-<div style="clear:both;"></div> <br />
 
 <button onclick="searchSongs()" style="width:600px; font-size:24px"> search songs </button> <br /> <br />
 
