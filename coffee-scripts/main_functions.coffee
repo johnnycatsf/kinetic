@@ -68,6 +68,9 @@ class EventQueue
   constructor: (@in_string, @beats, @song_length) ->
     @_event_queue = []
 
+    # Rate (in ms) our clock checks for animation keyframes
+    @rate = 15
+
     @text_array = in_string.split(" ")
     @_linkBeats()
 
@@ -87,22 +90,43 @@ class EventQueue
 
     return @song_length
 
+  stop: (e) =>
+    console.log e, e.jPlayer.status
+    console.log "STOPPING"
+    @playing = false
+    clearTimeout @timeout
+
+  start: (e) =>
+    console.log "STARTING"
+    @playing = true
+
   # Gets called by the music player. The seek time (in ms),
   # specifies how far along the song we need to be.
   seekTo: (@seek_time) ->
-    clearInterval @timer if @timer?
+    if @playing isnt true then return
 
-    rate = 15
-    set_interval_time = @seek_time
-    @timer = setInterval =>
-      #FIXME Use sequential callback not setInterval
-      set_interval_time += rate
-      for item in @_event_queue
-        if set_interval_time - rate <= item.time <= set_interval_time + rate
-          item.animation.apply item.element
-    , rate
+    console.log "SEEKING TO: #{@seek_time}"
 
-# method.apply(el$, options)
+    if @timeout?
+      console.log "CLEARING TIMEOUT: #{@timeout}"
+      clearTimeout @timeout
+
+    @_runEventQueue(@seek_time)
+
+  _runEventQueue: (start_time) ->
+    console.log "Frame: #{start_time}"
+    if @seek_time > start_time then return
+
+    for item in @_event_queue
+      if start_time - @rate <= item.time <= start_time + @rate
+        item.animation.apply item.element
+        console.log "Playing: '#{item.element}'"
+
+    next_start_time = start_time + @rate
+
+    @timeout = setTimeout =>
+      @_runEventQueue next_start_time
+    , @rate
 
 # Animation.get("name", options) ------- returns callback method
 # Pixar, the animation factory. Get it!! hahahahaha.
@@ -217,5 +241,11 @@ jQuery ->
       t = e.jPlayer.status.currentTime * 1000
       console.log "Time update:", t
       event_queue.seekTo t
+
+    jp$.bind jEvent.abort, event_queue.stop
+    jp$.bind jEvent.pause, event_queue.stop
+    jp$.bind jEvent.ended, event_queue.stop
+
+    jp$.bind jEvent.play, event_queue.start
 
   track.ready trackReady
