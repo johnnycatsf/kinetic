@@ -56,21 +56,37 @@ class TestData
   @timestamps: ->
     avg_beat = 500
     num_beats = 100
-    multipliers = [.25, .5, 1, 2, 4]
+    multipliers = [.5, 1, 2]
     t = 0
     out = []
     for i in [1..num_beats]
-      t += avg_beat * multipliers[Math.floor(Math.random()*5)]
+      t += avg_beat * multipliers[Math.floor(Math.random()*multipliers.length)]
       out.push t
     out
 
-class EventList
+class EventQueue
   constructor: (@in_string, @beats) ->
+    @_event_queue = []
+
     @text_array = in_string.split(" ")
+    @_linkBeats()
+
+  _linkBeats: ->
+    for t,index in @beats
+      # FIXME need to check not overflowing index
+      if index >= @text_array.length then break
+      el$ = $("<div>#{@text_array[index]}</div>")
+      @_event_queue.push
+        time: t
+        animation: Pixar.getRandom()
+        element: el$
 
   # Gets called by the music player. The seek time (in ms),
   # specifies how far along the song we need to be.
-  seekTo: (@seekTime) ->
+  seekTo: (@seek_time) ->
+    for item in @_event_queue
+      if @seek_time - 250 <= item.time <= @seek_time + 250
+        item.animation.apply item.element
 
 class Animator
 
@@ -82,18 +98,45 @@ class Pixar
   @get: (type, options) ->
     self = @
     return (options) ->
-      self.preAnimates(@)
-      self[type].apply @, options
+      self.preAnimate(@)
+      self.animations[type].apply @, options
+      self.postAnimate(@)
+
+  @getRandom: ->
+    self = @
+    return (options) ->
+      names = []
+      for name, animation of self.animations
+        names.push name
+
+      rand_name = names[Math.floor(Math.random()*names.length)]
+
+      self.preAnimate(@)
+      self.animations[rand_name].apply @, options
       self.postAnimate(@)
 
   @preAnimate: (el$) ->
+    console.log "Appending ", el$
+    $("#animation").append el$
 
   @postAnimate: (el$) ->
 
-  @fade: (options) ->
-    @.fadeIn().delay(500).fadeOut()
+  @animations =
+    fade: (options) ->
+      console.log "Fade"
+      @.fadeIn('fast').delay(1000).fadeOut()
+
+    bump: (options) ->
+      console.log "bump"
+      @.fadeIn('fast').delay(1000).fadeOut()
+
+    jump: (options) ->
+      console.log "jump"
+      @.fadeIn('fast').delay(1000).fadeOut()
 
 jQuery ->
+  event_queue = new EventQueue TestData.test_string, TestData.timestamps()
+
   jp$ = $("#jplayer")
   jEvent = $.jPlayer.event
 
@@ -101,10 +144,13 @@ jQuery ->
     ready: ->
       $(@).jPlayer "setMedia",
         # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
-        mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+        # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+        mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
       .jPlayer("play")
     supplied:"mp3"
     swfPath:"/javascripts/Jplayer.swf"
 
   jp$.bind jEvent.timeupdate, (e) ->
-    console.log "Time update:", e.jPlayer.status.currentTime * 1000
+    t = e.jPlayer.status.currentTime * 1000
+    console.log "Time update:", t
+    event_queue.seekTo t
