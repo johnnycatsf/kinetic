@@ -1,3 +1,16 @@
+searchSongs = () ->
+  $.ajax
+    type: 'POST'
+    url: "http://developer.echonest.com/api/v4/track/analyze"
+    data: 
+      api_key: "CJMTSEJKZGMYYF9UI"
+      id: song_id
+      bucket: "id:fma"
+      limit: "true"
+    success: analyzeSongCallback
+    error: errorCallback
+    dataType: "json"
+
 analyzeSong = (song_id) ->
   $.ajax
     type: 'POST'
@@ -13,10 +26,14 @@ analyzeSong = (song_id) ->
 retrieveAnalysis = (analysis_url) ->
   $.ajax
     type: 'GET'
-    url: analysis_url
-    success: 
+    url: "https://echonest-analysis.s3.amazonaws.com:443/TR/TRXXHTJ1294CD8F3B3/3/full.json"
+    data:
+      Signature: "S%2B2XUbeFnbW9%2FEAadICUDP6QmfU%3D"
+      Expires: "1320536236"
+      AWSAccessKeyId: "AKIAJRDFEY23UEVW42BQ"
+    success: retrieveAnalysisCallback
     error: errorCallback
-    dataType: "json"
+    dataType: "xml"
 
 analyzeSongCallback = (data, textStatus, jqXHR) -> 
   # data is a json object containing the track analyze data
