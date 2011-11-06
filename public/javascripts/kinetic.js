@@ -23,6 +23,9 @@ EventList = (function() {
     this.beats = beats;
     this.text_array = in_string.split(" ");
   }
+  EventList.prototype.seekTo = function(seekTime) {
+    this.seekTime = seekTime;
+  };
   return EventList;
 })();
 Animator = (function() {
@@ -47,6 +50,23 @@ Pixar = (function() {
   };
   return Pixar;
 })();
+jQuery(function() {
+  var jEvent, jp$;
+  jp$ = $("#jplayer");
+  jEvent = $.jPlayer.event;
+  jp$.jPlayer({
+    ready: function() {
+      return $(this).jPlayer("setMedia", {
+        mp3: "http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+      }).jPlayer("play");
+    },
+    supplied: "mp3",
+    swfPath: "/javascripts/Jplayer.swf"
+  });
+  return jp$.bind(jEvent.timeupdate, function(e) {
+    return console.log("Time update:", e.jPlayer.status.currentTime * 1000);
+  });
+});
 appear = function(word) {
   return $("#animation").html(word);
 };
