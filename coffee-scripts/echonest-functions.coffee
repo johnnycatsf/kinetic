@@ -14,7 +14,7 @@ retrieveAnalysis = (analysis_url) ->
   $.ajax
     type: 'GET'
     url: analysis_url
-    success: 
+    success: ->
     error: errorCallback
     dataType: "json"
 

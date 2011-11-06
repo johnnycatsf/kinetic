@@ -14,7 +14,6 @@
 #   return [create_event(0, "appear", text)]
 # 
 # start_animation = (event_list) ->
-#   # initialize JPlayer
 #   # TODO: setup callback functions for beats
 #   # loop goes hur
 # 
@@ -69,6 +68,10 @@ class EventList
   constructor: (@in_string, @beats) ->
     @text_array = in_string.split(" ")
 
+  # Gets called by the music player. The seek time (in ms),
+  # specifies how far along the song we need to be.
+  seekTo: (@seekTime) ->
+
 class Animator
 
 # method.apply(el$, options)
@@ -89,3 +92,19 @@ class Pixar
 
   @fade: (options) ->
     @.fadeIn().delay(500).fadeOut()
+
+jQuery ->
+  jp$ = $("#jplayer")
+  jEvent = $.jPlayer.event
+
+  jp$.jPlayer
+    ready: ->
+      $(@).jPlayer "setMedia",
+        # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
+        mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+      .jPlayer("play")
+    supplied:"mp3"
+    swfPath:"/javascripts/Jplayer.swf"
+
+  jp$.bind jEvent.timeupdate, (e) ->
+    console.log "Time update:", e.jPlayer.status.currentTime * 1000
