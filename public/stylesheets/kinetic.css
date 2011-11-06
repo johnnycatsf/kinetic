@@ -123,18 +123,5 @@ button:active{background:#73cbcd url(/static/images/button_blue_active_bg.png) r
 .error{color:#f8473f;}
 .inputHintOverlay{-khtml-opacity:0.5;-moz-opacity:0.5;opacity:0.5;filter:alpha(opacity=50);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";font-size:14px;}
 .loading_module{width:100%;height:100%;text-align:center;color:#aaaaaa;}
-body{background-color:#d2d2d2;background-repeat:repeat-x;background-image:-khtml-gradient(linear, left top, left bottom, from(#ebebeb), to(#d2d2d2));background-image:-moz-linear-gradient(top, #ebebeb, #d2d2d2);background-image:-ms-linear-gradient(top, #ebebeb, #d2d2d2);background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #ebebeb), color-stop(100%, #d2d2d2));background-image:-webkit-linear-gradient(top, #ebebeb, #d2d2d2);background-image:-o-linear-gradient(top, #ebebeb, #d2d2d2);background-image:linear-gradient(top, #ebebeb, #d2d2d2);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebebeb', endColorstr='#d2d2d2', GradientType=0);background:#ebebeb url(/static/images/noise_pattern_with_crosslines.png) repeat top left;}
-#top_drop_area{width:100%;}
+body{background:url(/images/type_bg.png) repeat;}
 .wrap{position:relative;width:800px;margin:0 auto;}
-#page_home{position:relative;z-index:1;background:transparent;}
-#logo{position:relative;margin:0 auto 20px auto;padding:30px 0 0 0;width:250px;height:250px;color:#444444;text-align:center;}#logo #logo_text{position:absolute;font-size:20px;top:260px;right:22px;}
-#login_top{font-size:80%;position:absolute;z-index:2;top:0;right:0;padding:5px 20px;color:#444444;background:#e0e0e0;}#login_top a{color:#399ea1;}#login_top a:hover{color:#338c8e;}
-#create_area{margin-top:20px;zoom:1;}#create_area:before,#create_area:after{display:table;content:"";zoom:1;*display:inline;}
-#create_area:after{clear:both;}
-#create{float:right;width:184px;height:184px;padding:5px;border:3px dashed #aaaaaa;color:#aaaaaa;text-align:center;font-size:120%;}#create:hover{cursor:pointer;color:#73cbcd;padding-top:6px;padding-left:6px;padding-right:6px;padding-bottom:6px;background:#444444 url(/static/images/444_texture.jpg) repeat;border:2px solid #aaaaaa;-webkit-box-shadow:inset 3px 3px 12px #111111;-moz-box-shadow:inset 3px 3px 12px #111111;box-shadow:inset 3px 3px 12px #111111;}#create:hover #plus{color:#cede65;}
-#create:active{-webkit-box-shadow:inset 5px 5px 15px #111111;-moz-box-shadow:inset 5px 5px 15px #111111;box-shadow:inset 5px 5px 15px #111111;padding-top:8px;padding-left:8px;padding-right:4px;padding-bottom:4px;}
-#create #plus{font-family:"BrandonGrotesqueBold",sans-serif;font-size:300%;}
-#or{float:right;padding-top:90px;color:#aaaaaa;margin:0 10px;width:27px;}
-#new_by_drop{float:left;}
-#tagline{color:#444444;font-size:125%;text-align:center;}
-.emphasis{font-family:"BrandonGrotesqueBold",sans-serif;}
