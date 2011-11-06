@@ -1,6 +1,6 @@
 class Track
-  constructor: (@echonest_track_id) ->
-    analyzeSong
+  constructor: (@echonest_track_id, @fma_id) ->
+    @analyzeSong
 
   ready: (@ready_callback) ->
     
@@ -22,6 +22,7 @@ class Track
     #if data.response.status.message is "Success"
     console.log("Retrieving analysis for "+data.response.track.title)
     console.log("Analysis url is "+ data.response.track.audio_summary.analysis_url)
+
     analysis_url = data.response.track.audio_summary.analysis_url
     @retrieveAnalysis(analysis_url)
 
@@ -40,11 +41,31 @@ class Track
     console.log(data)
     #data is a json object containing detailed track analysis
     @beats = data.beats
+    @song_end = data.track.duration
+    
+    # now we have the data, but we also need the song
+    setSongURL()
+
+  setSongURL: ->
+    $.ajax
+      type: 'GET'
+      url: "/get_fma_track_url"
+      data:
+        track_url: "http://freemusicarchive.org/services/playlists/embed/track/" + @fma_id + ".xml"
+      success: @setSongURLCallback
+      error: @errorCallback
+      dataType: "xml"
+
+  setSongURLCallback: (data, textStatus, jqXHR) ->
+    console.log(data)
+    @song = data.track.download
     # when complete, say i'm ready
     @ready_callback() if @ready_callback?
 
-  errorCallback: (jqXHR) ->
-   alert "there was an error"
+  errorCallback: (jqXHR, textstatus, error_thrown) ->
+   console.error "there was an error", jqXHR, textstatus, error_thrown
+
+  getSongEnd: -> @song_end
 
   getBeats: ->
     actual_beats = []
