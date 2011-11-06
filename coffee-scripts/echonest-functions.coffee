@@ -1,10 +1,26 @@
-analyzeSong = (song_id) ->
+searchSongs = (song_id) ->
   $.ajax
     type: 'POST'
     url: "http://developer.echonest.com/api/v4/track/analyze"
     data: 
       api_key: "CJMTSEJKZGMYYF9UI"
       id: song_id
+      bucket: "id:fma"
+      limit: "true"
+    success: analyzeSongCallback
+    error: errorCallback
+    dataType: "json"
+
+getFMAFile = (fma_song_id) ->
+  "http://freemusicarchive.org/services/playlists/embed/track/" + fma_song_id + ".xml"
+
+analyzeSong = (echonest_song_id) ->
+  $.ajax
+    type: 'POST'
+    url: "http://developer.echonest.com/api/v4/track/analyze"
+    data: 
+      api_key: "CJMTSEJKZGMYYF9UI"
+      id: echonest_song_id
       bucket: "audio_summary"
     success: analyzeSongCallback
     error: errorCallback
@@ -13,10 +29,14 @@ analyzeSong = (song_id) ->
 retrieveAnalysis = (analysis_url) ->
   $.ajax
     type: 'GET'
-    url: analysis_url
-    success: ->
+    url: "https://echonest-analysis.s3.amazonaws.com:443/TR/TRXXHTJ1294CD8F3B3/3/full.json"
+    data:
+      Signature: "S%2B2XUbeFnbW9%2FEAadICUDP6QmfU%3D"
+      Expires: "1320536236"
+      AWSAccessKeyId: "AKIAJRDFEY23UEVW42BQ"
+    success: retrieveAnalysisCallback
     error: errorCallback
-    dataType: "json"
+    dataType: "xml"
 
 analyzeSongCallback = (data, textStatus, jqXHR) -> 
   # data is a json object containing the track analyze data
