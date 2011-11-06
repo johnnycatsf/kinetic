@@ -1,14 +1,26 @@
-<h1> Welcome to kinectic! </h1>
-<div id="user-input">
+<div class="header-item onefourth">
+  <h1> Kinetic </h1>
+  <p> Enter the text of your choice and choose a song mood and we'll put your words to music! </p>
+</div>
 
-   <textarea id="text" type="text">please type your words here...</textarea>
+<div class="header-item onehalf">
+  <textarea id="text" type="text">please type your words here...</textarea>
+</div>
 
-   <h2> Now select a song... </h2>
+<div class="header-item oneeighth">
+  <h3>Mood</h3>
+  <div id="moods">
+      <input type="radio" name="mood" value="happy" checked> happy
+      <input type="radio" name="mood" value="sad"> sad 
+      <input type="radio" name="mood" value="angry"> angry 
+      <input type="radio" name="mood" value="relaxing"> relaxing 
+      <input type="radio" name="mood" value="excited"> excited 
+  </div><!-- end moods -->
+</div>
 
-   <%= render :partial => "select-song" %> 
+<div class="header-item oneeighth">
+  <button id="play_song"> GO </button>
+</div>
 
-   <input id="fma-song-id" type="hidden" value="13725" name="fma-song-id" />
-   <input id="echonest-song-id" type="hidden" value="TRQCKVG131BAB7368F" name="echonest-song-id" />
-   <button onclick="play()">Play</button>
-</div><!-- end user-input-->
-
+<input type="hidden" value="13725" name="fma-track-id" />
+<input type="hidden" value="TRQCKVG131BAB7368F" name="echonest-track-id" />
