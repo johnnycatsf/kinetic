@@ -1,0 +1,62 @@
+/*****************************************
+ * Colors
+ *****************************************/
+@grey6: #666;
+@grey4: #444;
+@grey3: #333;
+@grey2: #222;
+@midgrey: #aaa;
+@white: #ebebeb;
+@blue:#73cbcd;
+@blue_lighter:#66CCCD;
+@bright_blue:#1AC7E4;
+@light_blue:#DDF2F5;
+@red:#F8473F;
+@green:#CEDE65;
+@green_lighter:#AEDE62;
+@green_dark:#2A4723;
+@darkgrey:#949494;
+@lightgrey:#DDE0E0;
+
+/*****************************************
+ * Color Scheme
+ *****************************************/
+@baseColor:         @blue;                  // Set a base color
+@complement:        spin(@baseColor, 180);  // Determine a complementary color
+@split1:            spin(@baseColor, 158);  // Split complements
+@split2:            spin(@baseColor, -158);
+@triad1:            spin(@baseColor, 135);  // Triads colors
+@triad2:            spin(@baseColor, -135);
+@tetra1:            spin(@baseColor, 90);   // Tetra colors
+@tetra2:            spin(@baseColor, -90);
+@analog1:           spin(@baseColor, 22);   // Analogs colors
+@analog2:           spin(@baseColor, -22);
+
+// Links
+@linkColor:         @blue;
+@linkColorHover:    darken(@linkColor, 15);
+
+@button_color:#70CCC0;
+@button_border_green_default:#b9c75b;
+@button_border_green_active:#94a049;
+@button_border_blue_default:#67b6b8;
+@button_border_blue_active:#539193;
+@button_border_grey_default:#c3c3c4;
+@button_border_grey_active:#9a9a9a;
+
+/*****************************************
+ * Other Variables
+ *****************************************/
+// Griditude
+// Modify the grid styles in mixins.less
+@gridColumns:       16;
+@gridColumnWidth:   40px;
+@gridGutterWidth:   20px;
+@extraSpace:        (@gridGutterWidth * 2); // For our grid calculations
+@siteWidth:         (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+
+
+/*****************************************
+ * Font and typography variables are defined
+ * in type.less instead
+ *****************************************/
