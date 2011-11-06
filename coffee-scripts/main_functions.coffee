@@ -81,7 +81,7 @@ class EventQueue
       el$ = $("<div class='text_el'>#{@text_array[index]}</div>")
       @_event_queue.push
         time: t
-        animation: Pixar.getRandom()
+        animation: Pixar.get('fade')
         element: el$
 
   getNextBeat: ->
@@ -131,21 +131,29 @@ class EventQueue
 # Animation.get("name", options) ------- returns callback method
 # Pixar, the animation factory. Get it!! hahahahaha.
 class Pixar
+  @count = 0
+  @randY = 0
+  @randX = 0
+
   @get: (type, options) ->
-    self = @
-    return (options) ->
-      self.preAnimate(@)
-      self.animations[type].apply @, options
-      self.postAnimate(@)
+
+    return Pixar.animations.fade
+
+    # self = Pixar
+    # return (options) ->
+    #   self.preAnimate(@)
+    #   self.animations[type].apply @, options
+    #   self.postAnimate(@)
 
   @getRandom: ->
-    self = @
+    self = Pixar
     return (options) ->
       names = []
       for name, animation of self.animations
         names.push name
 
       rand_name = names[Math.floor(Math.random()*names.length)]
+      console.log names
 
       self.preAnimate(@)
       self.animations[rand_name].apply @, options
@@ -171,13 +179,27 @@ class Pixar
   # Each animation gets passed in total amount of time.
 
   @animations =
+
     fade: (options) ->
+      $("#animation").append @
+      if Math.floor(Math.random() * 7) is 2
+        Pixar.randY = Math.random() * 70
+        Pixar.randX = Math.random() * 70
+      @.css
+        top: "#{Pixar.randY}%"
+        left: "#{Pixar.randX}%"
       @.show().delay(1000).fadeOut()
 
     bump: (options) ->
+      @.css
+        top: "#{Pixar.randY}%"
+        left: "#{Pixar.randX}%"
       @.show().delay(1000).fadeOut()
 
     jump: (options) ->
+      @.css
+        top: "#{Pixar.randY}%"
+        left: "#{Pixar.randX}%"
       @.show().delay(1000).fadeOut()
 
 class Routine
@@ -241,6 +263,12 @@ class SongSearch
 
 
     #FIXME Manual song override
+    fma_id = 13807
+    # fma_id = 19333
+    # fma_id = 38606
+    echonext_track_id = "TRWWDSD131BAB736D9"
+    # echonext_track_id = "TRTOVRE131BAB74640"
+    # echonext_track_id = "TRRHPHX131BAB780DC"
 
     window.track = new Track echonest_track_id, fma_id
     window.track.ready window.trackReady
