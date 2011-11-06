@@ -56,6 +56,7 @@ class Track
       dataType: "xml"
 
   setSongURLCallback: (data, textStatus, jqXHR) =>
+    #TODO: change Song to Track
     console.log(data)
     @track_url = $(data).find("download").text()
     # when complete, say i'm ready
@@ -65,6 +66,7 @@ class Track
    console.error "there was an error", jqXHR, textstatus, error_thrown
 
   getSongEnd: -> @song_end
+  # TODO: change song to track
 
   getTrackUrl: -> @track_url
 
