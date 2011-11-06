@@ -10,6 +10,7 @@ Kinetic::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   match 'track_analysis' => 'proxy#track_analysis'
+  match 'get_fma_track_url' => 'proxy#get_fma_track_url'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
