@@ -65,7 +65,7 @@ class TestData
     out
 
 class EventQueue
-  constructor: (@in_string, @beats) ->
+  constructor: (@in_string, @beats, @song_length) ->
     @_event_queue = []
 
     @text_array = in_string.split(" ")
@@ -80,6 +80,12 @@ class EventQueue
         time: t
         animation: Pixar.getRandom()
         element: el$
+
+  getNextBeat: ->
+    for beat in @beats
+      if beat > @seek_time then return beat
+
+    return @song_length
 
   # Gets called by the music player. The seek time (in ms),
   # specifies how far along the song we need to be.
