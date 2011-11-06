@@ -1,4 +1,4 @@
-searchSongs = () ->
+searchSongs = (song_id) ->
   $.ajax
     type: 'POST'
     url: "http://developer.echonest.com/api/v4/track/analyze"
@@ -11,13 +11,16 @@ searchSongs = () ->
     error: errorCallback
     dataType: "json"
 
-analyzeSong = (song_id) ->
+getFMAFile = (fma_song_id) ->
+  "http://freemusicarchive.org/services/playlists/embed/track/" + fma_song_id + ".xml"
+
+analyzeSong = (echonest_song_id) ->
   $.ajax
     type: 'POST'
     url: "http://developer.echonest.com/api/v4/track/analyze"
     data: 
       api_key: "CJMTSEJKZGMYYF9UI"
-      id: song_id
+      id: echonest_song_id
       bucket: "audio_summary"
     success: analyzeSongCallback
     error: errorCallback
