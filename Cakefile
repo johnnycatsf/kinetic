@@ -14,10 +14,10 @@ dist     = 'public/javascripts'
 
 targets =
   'kinetic' : [
+    'track'
     'main_functions',
     'animations',
     'echonest-functions',
-    'track'
   ]
 
 task "build", "Build all targets", ->
