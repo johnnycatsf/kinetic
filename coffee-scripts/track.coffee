@@ -1,9 +1,9 @@
 class Track
   constructor: (@echonest_track_id) ->
-    analyzeSong
+    @analyzeSong()
 
   ready: (@ready_callback) ->
-    
+
   analyzeSong: ->
     $.ajax
       type: 'GET'
@@ -16,12 +16,13 @@ class Track
       error: @errorCallback
       dataType: "json"
 
-  analyzeSongCallback: (data, textStatus, jqXHR) -> 
+  analyzeSongCallback: (data, textStatus, jqXHR) => 
     # data is a json object containing the track analyze data
     console.log(data)
     #if data.response.status.message is "Success"
     console.log("Retrieving analysis for "+data.response.track.title)
     console.log("Analysis url is "+ data.response.track.audio_summary.analysis_url)
+
     analysis_url = data.response.track.audio_summary.analysis_url
     @retrieveAnalysis(analysis_url)
 
@@ -34,17 +35,20 @@ class Track
       success: @retrieveAnalysisCallback
       error: @errorCallback
       dataType: "json"
-    
-  retrieveAnalysisCallback: (data, textStatus, jqXHR) ->
+
+  retrieveAnalysisCallback: (data, textStatus, jqXHR) =>
     console.log("RETRIEVE ANALYSIS CALLBACK")
     console.log(data)
     #data is a json object containing detailed track analysis
     @beats = data.beats
+    @song_end = data.tack.duration
     # when complete, say i'm ready
     @ready_callback() if @ready_callback?
 
-  errorCallback: (jqXHR) ->
-   alert "there was an error"
+  errorCallback: (jqXHR, textstatus, error_thrown) ->
+   console.error "there was an error", jqXHR, textstatus, error_thrown
+
+  getSongEnd: -> @song_end
 
   getBeats: ->
     actual_beats = []

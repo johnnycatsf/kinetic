@@ -176,22 +176,29 @@ class Routine
     # if not, load up a new animation of appropriate time class
 
 jQuery ->
-  event_queue = new EventQueue TestData.test_string, TestData.timestamps()
-
   jp$ = $("#jplayer")
   jEvent = $.jPlayer.event
 
-  jp$.jPlayer
-    ready: ->
-      $(@).jPlayer "setMedia",
-        # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
-        # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
-        mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
-      .jPlayer("play")
-    supplied:"mp3"
-    swfPath:"/javascripts/Jplayer.swf"
+  track = new Track "TRQCKVG131BAB7368F"
+  track.ready trackReady
 
-  jp$.bind jEvent.timeupdate, (e) ->
-    t = e.jPlayer.status.currentTime * 1000
-    console.log "Time update:", t
-    event_queue.seekTo t
+  trackReady = ->
+    event_queue = new EventQueue TestData.test_string, 
+                                 track.getBeats(),
+                                 tack.getSongEnd()
+
+    jp$.jPlayer
+      ready: ->
+        $(@).jPlayer "setMedia",
+          # ogg:"http://upload.wikimedia.org/wikipedia/en/a/ab/Bruno_Mars_-_Just_the_Way_You_Are.ogg"
+          # mp3:"http://freemusicarchive.org/music/download/fe424853241ced3a8045f4e1ff3d6c4a3308f602"
+          # mp3:"http://www.minneapolisfuckingrocks.com/mp3/taylorswift_jumpthenfall1.mp3"
+          mp3:"http://freemusicarchive.org/music/download/b5159a74e2968626d394bacba885d57bd2749d2d"
+        .jPlayer("play")
+      supplied:"mp3"
+      swfPath:"/javascripts/Jplayer.swf"
+
+    jp$.bind jEvent.timeupdate, (e) ->
+      t = e.jPlayer.status.currentTime * 1000
+      console.log "Time update:", t
+      event_queue.seekTo t
