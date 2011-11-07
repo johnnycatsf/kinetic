@@ -47,7 +47,7 @@
   #   the callback anmiation method
 
 class TestData
-  @test_string: "Welcome to Kinetic, a web application that dynamically generates a kinetic typographic representation of a piece of user-generated text. ... ... Just like this."
+  @test_string: "Welcome to Kinetic, a web application that dynamically generates a kinetic typographic representation of a piece of user-generated text, using Echo Nest's API and music from the Free Music Archive. It was started at Boston Music Hack Day 2011, and is still in its early stages. We plan to gradually improve Kinetic with more animations and music search functionality."
 
   @timestamps: ->
     avg_beat = 500
@@ -180,7 +180,7 @@ class Pixar
       $("#animation").append @
       if Math.floor(Math.random() * 7) is 2
         Pixar.randY = Math.random() * 70
-        Pixar.randX = Math.random() * 70
+        Pixar.randX = Math.random() * .95 * window.innerWidth - @.width
       @.css
         top: "#{Pixar.randY}%"
         left: "#{Pixar.randX}%"
@@ -189,7 +189,7 @@ class Pixar
     bump: (options) ->
       @.css
         top: "#{Pixar.randY}%"
-        left: "#{Pixar.randX}%"
+        left: "#{Pixar.randX}"
       @.show().delay(1000).fadeOut()
 
     jump: (options) ->

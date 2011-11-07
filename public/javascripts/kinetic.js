@@ -98,7 +98,7 @@ Track = (function() {
 })();
 TestData = (function() {
   function TestData() {}
-  TestData.test_string = "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.  Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.  But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.";
+  TestData.test_string = "Welcome to Kinetic, a web application that dynamically generates a kinetic typographic representation of a piece of user-generated text, using Echo Nest's API and music from the Free Music Archive. It was started at Boston Music Hack Day 2011, and is still in its early stages. We plan to gradually improve Kinetic with more animations and music search functionality.";
   TestData.timestamps = function() {
     var avg_beat, i, multipliers, num_beats, out, t;
     avg_beat = 500;
@@ -233,7 +233,7 @@ Pixar = (function() {
       $("#animation").append(this);
       if (Math.floor(Math.random() * 7) === 2) {
         Pixar.randY = Math.random() * 70;
-        Pixar.randX = Math.random() * 70;
+        Pixar.randX = Math.random() * .95 * window.innerWidth - this.width;
       }
       this.css({
         top: "" + Pixar.randY + "%",
@@ -244,7 +244,7 @@ Pixar = (function() {
     bump: function(options) {
       this.css({
         top: "" + Pixar.randY + "%",
-        left: "" + Pixar.randX + "%"
+        left: "" + Pixar.randX
       });
       return this.show().delay(1000).fadeOut();
     },
